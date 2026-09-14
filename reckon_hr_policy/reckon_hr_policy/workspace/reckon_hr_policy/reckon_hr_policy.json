@@ -1,0 +1,76 @@
+{
+  "doctype": "Workspace",
+  "name": "Reckon HR Policy",
+  "label": "Reckon HR Policy",
+  "title": "Reckon HR Policy",
+  "module": "Reckon HR Policy",
+  "public": 1,
+  "icon": "hr",
+  "is_hidden": 0,
+  "content": "[{\"id\": \"rhp-0\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Policy Settings\", \"col\": 3}}, {\"id\": \"rhp-1\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Attendance Summary\", \"col\": 3}}, {\"id\": \"rhp-2\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Employee\", \"col\": 3}}, {\"id\": \"rhp-3\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Employee Checkin\", \"col\": 3}}, {\"id\": \"rhp-4\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Attendance\", \"col\": 3}}, {\"id\": \"rhp-5\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Salary Slip\", \"col\": 3}}, {\"id\": \"rhp-6\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Payroll Entry\", \"col\": 3}}]",
+  "roles": [
+    {
+      "role": "HR Manager"
+    },
+    {
+      "role": "System Manager"
+    }
+  ],
+  "shortcuts": [
+    {
+      "label": "Policy Settings",
+      "type": "DocType",
+      "link_to": "Reckon HR Policy Settings",
+      "doc_view": "List"
+    },
+    {
+      "label": "Attendance Summary",
+      "type": "DocType",
+      "link_to": "Reckon HR Attendance Summary",
+      "doc_view": "List"
+    },
+    {
+      "label": "Employee",
+      "type": "DocType",
+      "link_to": "Employee",
+      "doc_view": "List"
+    },
+    {
+      "label": "Employee Checkin",
+      "type": "DocType",
+      "link_to": "Employee Checkin",
+      "doc_view": "List"
+    },
+    {
+      "label": "Attendance",
+      "type": "DocType",
+      "link_to": "Attendance",
+      "doc_view": "List"
+    },
+    {
+      "label": "Salary Slip",
+      "type": "DocType",
+      "link_to": "Salary Slip",
+      "doc_view": "List"
+    },
+    {
+      "label": "Payroll Entry",
+      "type": "DocType",
+      "link_to": "Payroll Entry",
+      "doc_view": "List"
+    }
+  ],
+  "links": [
+    {
+      "type": "Card Break",
+      "label": "Reports"
+    },
+    {
+      "type": "Link",
+      "label": "Reckon HR Attendance Policy Report",
+      "link_type": "Report",
+      "link_to": "Reckon HR Attendance Policy Report",
+      "is_query_report": 1
+    }
+  ]
+}

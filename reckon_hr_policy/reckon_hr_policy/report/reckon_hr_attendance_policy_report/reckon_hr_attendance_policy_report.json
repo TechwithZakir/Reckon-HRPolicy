@@ -1,0 +1,19 @@
+{
+  "doctype": "Report",
+  "name": "Reckon HR Attendance Policy Report",
+  "report_name": "Reckon HR Attendance Policy Report",
+  "ref_doctype": "Employee",
+  "report_type": "Script Report",
+  "is_standard": "Yes",
+  "module": "Reckon HR Policy",
+  "roles": [
+    {
+      "role": "HR Manager"
+    },
+    {
+      "role": "System Manager"
+    }
+  ],
+  "add_total_row": 0,
+  "disabled": 0
+}

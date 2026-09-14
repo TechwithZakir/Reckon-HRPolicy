@@ -1,0 +1,232 @@
+{
+  "doctype": "DocType",
+  "name": "Reckon HR Attendance Summary",
+  "module": "Reckon HR Policy",
+  "engine": "InnoDB",
+  "issingle": 0,
+  "istable": 0,
+  "track_changes": 1,
+  "fields": [
+    {
+      "fieldname": "salary_slip",
+      "fieldtype": "Link",
+      "label": "Salary Slip",
+      "options": "Salary Slip",
+      "reqd": 1,
+      "unique": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "employee",
+      "fieldtype": "Link",
+      "label": "Employee",
+      "options": "Employee",
+      "reqd": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "company",
+      "fieldtype": "Link",
+      "label": "Company",
+      "options": "Company",
+      "reqd": 1
+    },
+    {
+      "fieldname": "start_date",
+      "fieldtype": "Date",
+      "label": "Start Date",
+      "reqd": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "end_date",
+      "fieldtype": "Date",
+      "label": "End Date",
+      "reqd": 1
+    },
+    {
+      "fieldname": "payroll_period",
+      "fieldtype": "Link",
+      "label": "Payroll Period",
+      "options": "Payroll Period"
+    },
+    {
+      "fieldname": "currency",
+      "fieldtype": "Link",
+      "label": "Currency",
+      "options": "Currency"
+    },
+    {
+      "fieldname": "payroll_type",
+      "fieldtype": "Data",
+      "label": "Payroll Type"
+    },
+    {
+      "fieldname": "attendance_policy",
+      "fieldtype": "Data",
+      "label": "Attendance Policy"
+    },
+    {
+      "fieldname": "working_days",
+      "fieldtype": "Float",
+      "label": "Working Days"
+    },
+    {
+      "fieldname": "payment_days",
+      "fieldtype": "Float",
+      "label": "Payment Days"
+    },
+    {
+      "fieldname": "late_entries",
+      "fieldtype": "Float",
+      "label": "Late Entries"
+    },
+    {
+      "fieldname": "early_exits",
+      "fieldtype": "Float",
+      "label": "Early Exits"
+    },
+    {
+      "fieldname": "break_violations",
+      "fieldtype": "Float",
+      "label": "Break Violations"
+    },
+    {
+      "fieldname": "late_deduction_days",
+      "fieldtype": "Float",
+      "label": "Late Deduction Days"
+    },
+    {
+      "fieldname": "early_deduction_days",
+      "fieldtype": "Float",
+      "label": "Early Deduction Days"
+    },
+    {
+      "fieldname": "break_deduction_days",
+      "fieldtype": "Float",
+      "label": "Break Deduction Days"
+    },
+    {
+      "fieldname": "total_deduction_days",
+      "fieldtype": "Float",
+      "label": "Total Deduction Days"
+    },
+    {
+      "fieldname": "early_entry_ot_minutes",
+      "fieldtype": "Float",
+      "label": "Early Entry Ot Minutes"
+    },
+    {
+      "fieldname": "ot_blocks",
+      "fieldtype": "Float",
+      "label": "Ot Blocks"
+    },
+    {
+      "fieldname": "ot_amount",
+      "fieldtype": "Currency",
+      "label": "Ot Amount",
+      "options": "currency"
+    },
+    {
+      "fieldname": "daily_salary_rate",
+      "fieldtype": "Currency",
+      "label": "Daily Salary Rate",
+      "options": "currency"
+    },
+    {
+      "fieldname": "late_deduction_amount",
+      "fieldtype": "Currency",
+      "label": "Late Deduction Amount",
+      "options": "currency"
+    },
+    {
+      "fieldname": "early_deduction_amount",
+      "fieldtype": "Currency",
+      "label": "Early Deduction Amount",
+      "options": "currency"
+    },
+    {
+      "fieldname": "break_deduction_amount",
+      "fieldtype": "Currency",
+      "label": "Break Deduction Amount",
+      "options": "currency"
+    },
+    {
+      "fieldname": "total_attendance_deduction",
+      "fieldtype": "Currency",
+      "label": "Total Attendance Deduction",
+      "options": "currency"
+    },
+    {
+      "fieldname": "daily_allowance_amount",
+      "fieldtype": "Currency",
+      "label": "Daily Allowance Amount",
+      "options": "currency"
+    },
+    {
+      "fieldname": "calculation_hash",
+      "fieldtype": "Data",
+      "label": "Calculation Hash"
+    },
+    {
+      "fieldname": "calculation",
+      "fieldtype": "Code",
+      "label": "Calculation",
+      "options": "JSON"
+    }
+  ],
+  "field_order": [
+    "salary_slip",
+    "employee",
+    "company",
+    "start_date",
+    "end_date",
+    "payroll_period",
+    "currency",
+    "payroll_type",
+    "attendance_policy",
+    "working_days",
+    "payment_days",
+    "late_entries",
+    "early_exits",
+    "break_violations",
+    "late_deduction_days",
+    "early_deduction_days",
+    "break_deduction_days",
+    "total_deduction_days",
+    "early_entry_ot_minutes",
+    "ot_blocks",
+    "ot_amount",
+    "daily_salary_rate",
+    "late_deduction_amount",
+    "early_deduction_amount",
+    "break_deduction_amount",
+    "total_attendance_deduction",
+    "daily_allowance_amount",
+    "calculation_hash",
+    "calculation"
+  ],
+  "permissions": [
+    {
+      "role": "System Manager",
+      "read": 1,
+      "write": 0,
+      "create": 0,
+      "report": 1,
+      "export": 1,
+      "print": 1
+    },
+    {
+      "role": "HR Manager",
+      "read": 1,
+      "write": 0,
+      "create": 0,
+      "report": 1,
+      "export": 1,
+      "print": 1
+    }
+  ],
+  "sort_field": "modified",
+  "sort_order": "DESC",
+  "autoname": "hash"
+}

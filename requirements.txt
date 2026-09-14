@@ -1,0 +1,1 @@
+# Frappe, ERPNext and HRMS are supplied by Bench, not pip.

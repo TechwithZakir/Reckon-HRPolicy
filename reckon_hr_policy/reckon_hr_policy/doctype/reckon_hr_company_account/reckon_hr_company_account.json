@@ -1,0 +1,49 @@
+{
+  "doctype": "DocType",
+  "name": "Reckon HR Company Account",
+  "module": "Reckon HR Policy",
+  "engine": "InnoDB",
+  "issingle": 0,
+  "istable": 1,
+  "track_changes": 1,
+  "fields": [
+    {
+      "fieldname": "company",
+      "fieldtype": "Link",
+      "label": "Company",
+      "options": "Company",
+      "reqd": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "expense_account",
+      "fieldtype": "Link",
+      "label": "Expense Account",
+      "options": "Account",
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "deduction_account",
+      "fieldtype": "Link",
+      "label": "Deduction Account",
+      "options": "Account",
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "payroll_payable_account",
+      "fieldtype": "Link",
+      "label": "Payroll Payable Account",
+      "options": "Account",
+      "in_list_view": 1
+    }
+  ],
+  "field_order": [
+    "company",
+    "expense_account",
+    "deduction_account",
+    "payroll_payable_account"
+  ],
+  "permissions": [],
+  "sort_field": "modified",
+  "sort_order": "DESC"
+}

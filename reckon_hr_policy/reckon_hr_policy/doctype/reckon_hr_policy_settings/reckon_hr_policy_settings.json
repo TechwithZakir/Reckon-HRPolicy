@@ -1,0 +1,373 @@
+{
+  "doctype": "DocType",
+  "name": "Reckon HR Policy Settings",
+  "module": "Reckon HR Policy",
+  "engine": "InnoDB",
+  "issingle": 1,
+  "istable": 0,
+  "track_changes": 1,
+  "fields": [
+    {
+      "fieldname": "general_section",
+      "fieldtype": "Section Break",
+      "label": "General"
+    },
+    {
+      "fieldname": "enabled",
+      "fieldtype": "Check",
+      "label": "Enabled",
+      "default": "1"
+    },
+    {
+      "fieldname": "policy_effective_from",
+      "fieldtype": "Date",
+      "label": "Policy Effective From",
+      "reqd": 1,
+      "description": "No policy payroll before this date. Change rules at payroll-period boundaries.",
+      "default": "Today"
+    },
+    {
+      "fieldname": "setup_status",
+      "fieldtype": "Code",
+      "label": "Setup Status",
+      "options": "JSON",
+      "read_only": 1
+    },
+    {
+      "fieldname": "attendance_section",
+      "fieldtype": "Section Break",
+      "label": "Attendance"
+    },
+    {
+      "fieldname": "late_policy_enabled",
+      "fieldtype": "Check",
+      "label": "Late Policy Enabled",
+      "default": "1"
+    },
+    {
+      "fieldname": "late_grace_minutes",
+      "fieldtype": "Int",
+      "label": "Late Grace Minutes",
+      "default": "30"
+    },
+    {
+      "fieldname": "late_occurrences_per_deduction_day",
+      "fieldtype": "Int",
+      "label": "Late Occurrences Per Deduction Day",
+      "default": "3"
+    },
+    {
+      "fieldname": "early_exit_policy_enabled",
+      "fieldtype": "Check",
+      "label": "Early Exit Policy Enabled",
+      "default": "1"
+    },
+    {
+      "fieldname": "early_exit_grace_minutes",
+      "fieldtype": "Int",
+      "label": "Early Exit Grace Minutes",
+      "default": "30"
+    },
+    {
+      "fieldname": "early_exit_occurrences_per_deduction_day",
+      "fieldtype": "Int",
+      "label": "Early Exit Occurrences Per Deduction Day",
+      "default": "3"
+    },
+    {
+      "fieldname": "break_section",
+      "fieldtype": "Section Break",
+      "label": "Break"
+    },
+    {
+      "fieldname": "break_policy_enabled",
+      "fieldtype": "Check",
+      "label": "Break Policy Enabled",
+      "default": "1"
+    },
+    {
+      "fieldname": "maximum_break_minutes",
+      "fieldtype": "Int",
+      "label": "Maximum Break Minutes",
+      "default": "30"
+    },
+    {
+      "fieldname": "break_violations_per_deduction_day",
+      "fieldtype": "Int",
+      "label": "Break Violations Per Deduction Day",
+      "default": "3"
+    },
+    {
+      "fieldname": "deduction_days_per_threshold",
+      "fieldtype": "Float",
+      "label": "Deduction Days Per Threshold",
+      "default": "1"
+    },
+    {
+      "fieldname": "overtime_section",
+      "fieldtype": "Section Break",
+      "label": "Overtime"
+    },
+    {
+      "fieldname": "early_entry_overtime_enabled",
+      "fieldtype": "Check",
+      "label": "Early Entry Overtime Enabled",
+      "default": "1"
+    },
+    {
+      "fieldname": "minimum_early_entry_minutes",
+      "fieldtype": "Int",
+      "label": "Minimum Early Entry Minutes",
+      "default": "30"
+    },
+    {
+      "fieldname": "overtime_block_minutes",
+      "fieldtype": "Int",
+      "label": "Overtime Block Minutes",
+      "default": "30"
+    },
+    {
+      "fieldname": "overtime_amount_per_block",
+      "fieldtype": "Float",
+      "label": "Overtime Amount Per Block",
+      "description": "In Salary Slip currency; complete blocks per shift only.",
+      "default": "1"
+    },
+    {
+      "fieldname": "payroll_section",
+      "fieldtype": "Section Break",
+      "label": "Payroll"
+    },
+    {
+      "fieldname": "daily_allowance_enabled",
+      "fieldtype": "Check",
+      "label": "Daily Allowance Enabled",
+      "default": "1"
+    },
+    {
+      "fieldname": "daily_allowance_amount",
+      "fieldtype": "Float",
+      "label": "Daily Allowance Amount",
+      "description": "In Salary Slip currency per native payment day.",
+      "default": "2"
+    },
+    {
+      "fieldname": "attendance_deduction_enabled",
+      "fieldtype": "Check",
+      "label": "Attendance Deduction Enabled",
+      "default": "1"
+    },
+    {
+      "fieldname": "day_rate_basis",
+      "fieldtype": "Select",
+      "label": "Day Rate Basis",
+      "options": "Assignment Base / Working Days\nAssignment Base / Payment Days\nAssignment Base / Calendar Days\nGross / Payment Days",
+      "default": "Assignment Base / Working Days"
+    },
+    {
+      "fieldname": "policy_earnings_taxable",
+      "fieldtype": "Check",
+      "label": "Policy Earnings Taxable",
+      "default": "1"
+    },
+    {
+      "fieldname": "company_accounts",
+      "fieldtype": "Table",
+      "label": "Company Accounts",
+      "options": "Reckon HR Company Account",
+      "description": "Optional overrides for native Company expense/payroll payable accounts; no accounts are invented."
+    },
+    {
+      "fieldname": "auto_checkout_section",
+      "fieldtype": "Section Break",
+      "label": "Auto Checkout"
+    },
+    {
+      "fieldname": "auto_checkout_enabled",
+      "fieldtype": "Check",
+      "label": "Auto Checkout Enabled",
+      "default": "1"
+    },
+    {
+      "fieldname": "maximum_open_checkin_hours",
+      "fieldtype": "Float",
+      "label": "Maximum Open Checkin Hours",
+      "default": "24"
+    },
+    {
+      "fieldname": "checkout_batch_size",
+      "fieldtype": "Int",
+      "label": "Checkout Batch Size",
+      "default": "500"
+    },
+    {
+      "fieldname": "shift_section",
+      "fieldtype": "Section Break",
+      "label": "Shift"
+    },
+    {
+      "fieldname": "regular_shift_start",
+      "fieldtype": "Time",
+      "label": "Regular Shift Start",
+      "default": "08:30:00"
+    },
+    {
+      "fieldname": "regular_shift_end",
+      "fieldtype": "Time",
+      "label": "Regular Shift End",
+      "default": "17:30:00"
+    },
+    {
+      "fieldname": "saturday_shift_start",
+      "fieldtype": "Time",
+      "label": "Saturday Shift Start",
+      "default": "10:00:00"
+    },
+    {
+      "fieldname": "saturday_shift_end",
+      "fieldtype": "Time",
+      "label": "Saturday Shift End",
+      "default": "17:30:00"
+    },
+    {
+      "fieldname": "sunday_weekly_holiday",
+      "fieldtype": "Check",
+      "label": "Sunday Weekly Holiday",
+      "default": "1"
+    },
+    {
+      "fieldname": "checkin_buffer_minutes",
+      "fieldtype": "Int",
+      "label": "Checkin Buffer Minutes",
+      "default": "120"
+    },
+    {
+      "fieldname": "checkout_buffer_minutes",
+      "fieldtype": "Int",
+      "label": "Checkout Buffer Minutes",
+      "default": "60"
+    },
+    {
+      "fieldname": "half_day_hours",
+      "fieldtype": "Float",
+      "label": "Half Day Hours",
+      "default": "4"
+    },
+    {
+      "fieldname": "absent_hours",
+      "fieldtype": "Float",
+      "label": "Absent Hours",
+      "default": "1"
+    },
+    {
+      "fieldname": "auto_update_last_sync",
+      "fieldtype": "Check",
+      "label": "Auto Update Last Sync",
+      "description": "Enable only for real-time checkin ingestion. Otherwise your device integration supplies Shift Type last_sync_of_checkin.",
+      "default": "0"
+    },
+    {
+      "fieldname": "assignment_horizon_days",
+      "fieldtype": "Int",
+      "label": "Assignment Horizon Days",
+      "default": "60"
+    },
+    {
+      "fieldname": "auto_assign_shifts",
+      "fieldtype": "Check",
+      "label": "Auto Assign Shifts",
+      "default": "1"
+    },
+    {
+      "fieldname": "employee_defaults_section",
+      "fieldtype": "Section Break",
+      "label": "Employee Defaults"
+    },
+    {
+      "fieldname": "default_payroll_type",
+      "fieldtype": "Select",
+      "label": "Default Payroll Type",
+      "options": "Monthly\nHourly",
+      "default": "Monthly"
+    },
+    {
+      "fieldname": "default_attendance_policy",
+      "fieldtype": "Select",
+      "label": "Default Attendance Policy",
+      "options": "Standard\nNo Attendance Deduction",
+      "default": "Standard"
+    }
+  ],
+  "field_order": [
+    "general_section",
+    "enabled",
+    "policy_effective_from",
+    "setup_status",
+    "attendance_section",
+    "late_policy_enabled",
+    "late_grace_minutes",
+    "late_occurrences_per_deduction_day",
+    "early_exit_policy_enabled",
+    "early_exit_grace_minutes",
+    "early_exit_occurrences_per_deduction_day",
+    "break_section",
+    "break_policy_enabled",
+    "maximum_break_minutes",
+    "break_violations_per_deduction_day",
+    "deduction_days_per_threshold",
+    "overtime_section",
+    "early_entry_overtime_enabled",
+    "minimum_early_entry_minutes",
+    "overtime_block_minutes",
+    "overtime_amount_per_block",
+    "payroll_section",
+    "daily_allowance_enabled",
+    "daily_allowance_amount",
+    "attendance_deduction_enabled",
+    "day_rate_basis",
+    "policy_earnings_taxable",
+    "company_accounts",
+    "auto_checkout_section",
+    "auto_checkout_enabled",
+    "maximum_open_checkin_hours",
+    "checkout_batch_size",
+    "shift_section",
+    "regular_shift_start",
+    "regular_shift_end",
+    "saturday_shift_start",
+    "saturday_shift_end",
+    "sunday_weekly_holiday",
+    "checkin_buffer_minutes",
+    "checkout_buffer_minutes",
+    "half_day_hours",
+    "absent_hours",
+    "auto_update_last_sync",
+    "assignment_horizon_days",
+    "auto_assign_shifts",
+    "employee_defaults_section",
+    "default_payroll_type",
+    "default_attendance_policy"
+  ],
+  "permissions": [
+    {
+      "role": "System Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "report": 1,
+      "export": 1,
+      "print": 1
+    },
+    {
+      "role": "HR Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "report": 1,
+      "export": 1,
+      "print": 1
+    }
+  ],
+  "sort_field": "modified",
+  "sort_order": "DESC"
+}

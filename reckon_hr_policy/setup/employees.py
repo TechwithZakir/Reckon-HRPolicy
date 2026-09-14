@@ -1,0 +1,174 @@
+"""Create native assignments from explicit salary inputs; preserve unrelated assignments."""
+
+import math
+from datetime import timedelta
+
+import frappe
+from frappe.utils import getdate
+
+from reckon_hr_policy.utils.settings import policy_types, settings
+
+POLICY_FIELDS = (
+    "rhp_payroll_type",
+    "rhp_attendance_policy",
+    "rhp_hourly_rate",
+    "rhp_monthly_salary",
+    "rhp_salary_effective_from",
+)
+
+
+def validate_employee(doc, method=None):
+    if frappe.flags.in_install or not frappe.get_meta("Employee").has_field("rhp_payroll_type"):
+        return
+    before = doc.get_doc_before_save()
+    changed = any(doc.has_value_changed(f) if before else bool(doc.get(f)) for f in POLICY_FIELDS)
+    if (
+        changed
+        and frappe.session.user != "Administrator"
+        and not set(frappe.get_roles()) & {"HR Manager", "System Manager"}
+    ):
+        frappe.throw(
+            "Only HR Manager or System Manager may change employee payroll policy", frappe.PermissionError
+        )
+    for field in ("rhp_hourly_rate", "rhp_monthly_salary"):
+        amount = float(doc.get(field) or 0)
+        if amount < 0 or not math.isfinite(amount):
+            frappe.throw("Salary and hourly rate must be finite, nonnegative amounts")
+    if doc.get("rhp_salary_effective_from") and getdate(doc.rhp_salary_effective_from) < getdate(
+        doc.date_of_joining
+    ):
+        frappe.throw("Salary effective date cannot precede joining date")
+
+
+def on_employee_update(doc, method=None):
+    if frappe.flags.in_install or frappe.flags.rhp_setup:
+        return
+    s = settings()
+    if s.enabled and doc.status == "Active":
+        provision(doc, s)
+
+
+def provision(employee, s):
+    from reckon_hr_policy.setup.install import ensure_structure
+
+    payroll_type, policy = policy_types(employee, s)
+    # Employee row lock serializes scheduler, salary setup and Employee save.
+    frappe.db.get_value("Employee", employee.name, "name", for_update=True)
+    if s.auto_assign_shifts and not employee.default_shift:
+        frappe.db.set_value("Employee", employee.name, "default_shift", "RHP Regular")
+        employee.default_shift = "RHP Regular"
+    if s.auto_assign_shifts and employee.default_shift == "RHP Regular":
+        schedule_saturdays(employee, s)
+    effective = employee.get("rhp_salary_effective_from")
+    amount = employee.get("rhp_hourly_rate" if payroll_type == "Hourly" else "rhp_monthly_salary") or 0
+    if not effective or amount <= 0:
+        return
+    effective = getdate(effective)
+    existing = frappe.get_all(
+        "Salary Structure Assignment",
+        filters={"employee": employee.name, "docstatus": 1, "from_date": ["<=", effective]},
+        fields=[
+            "name",
+            "from_date",
+            "rhp_managed",
+            "base",
+            "rhp_hourly_rate",
+            "rhp_payroll_type",
+            "rhp_attendance_policy",
+        ],
+        order_by="from_date desc",
+        limit_page_length=1,
+    )
+    if existing:
+        previous = existing[0]
+        if not previous.rhp_managed:
+            return  # Existing native payroll is explicitly preserved.
+        if previous.from_date == effective:
+            old_amount = previous.rhp_hourly_rate if payroll_type == "Hourly" else previous.base
+            if (
+                float(old_amount or 0) != float(amount)
+                or previous.rhp_payroll_type != payroll_type
+                or previous.rhp_attendance_policy != policy
+            ):
+                frappe.throw(
+                    "A salary assignment exists on this effective date. Enter a new effective date for a salary or policy change."
+                )
+            return
+    if frappe.db.exists(
+        "Salary Slip", {"employee": employee.name, "docstatus": 1, "end_date": [">=", effective]}
+    ):
+        frappe.throw(
+            "Salary effective date overlaps submitted payroll. Use a future effective date or the native payroll correction process."
+        )
+    currency = employee.salary_currency or frappe.get_cached_value(
+        "Company", employee.company, "default_currency"
+    )
+    structure = ensure_structure(employee.company, currency, payroll_type)
+    override = next((r for r in s.company_accounts if r.company == employee.company), None)
+    assignment = frappe.get_doc(
+        dict(
+            doctype="Salary Structure Assignment",
+            employee=employee.name,
+            company=employee.company,
+            salary_structure=structure.name,
+            from_date=effective,
+            base=amount if payroll_type == "Monthly" else 0,
+            currency=currency,
+            rhp_managed=1,
+            rhp_hourly_rate=employee.get("rhp_hourly_rate") or 0,
+            rhp_payroll_type=payroll_type,
+            rhp_attendance_policy=policy,
+            payroll_payable_account=override.payroll_payable_account if override else None,
+        )
+    )
+    assignment.flags.ignore_permissions = True
+    assignment.insert()
+    assignment.submit()
+
+
+def schedule_saturdays(employee, s):
+    start = max(getdate(), getdate(s.policy_effective_from), getdate(employee.date_of_joining))
+    end = start + timedelta(days=s.assignment_horizon_days)
+    if employee.relieving_date:
+        end = min(end, getdate(employee.relieving_date))
+    existing = frappe.get_all(
+        "Shift Assignment",
+        filters={"employee": employee.name, "docstatus": 1, "status": "Active", "start_date": ["<=", end]},
+        fields=["start_date", "end_date"],
+    )
+    day = start + timedelta(days=(5 - start.weekday()) % 7)
+    while day <= end:
+        if not any(row.start_date <= day and (not row.end_date or row.end_date >= day) for row in existing):
+            doc = frappe.get_doc(
+                dict(
+                    doctype="Shift Assignment",
+                    employee=employee.name,
+                    company=employee.company,
+                    shift_type="RHP Saturday",
+                    start_date=day,
+                    end_date=day,
+                    status="Active",
+                    rhp_managed=1,
+                )
+            )
+            doc.flags.ignore_permissions = True
+            doc.insert()
+            doc.submit()
+        day += timedelta(days=7)
+
+
+def maintain():
+    s = settings()
+    if not s.enabled:
+        return
+    from reckon_hr_policy.setup.install import ensure_holidays
+
+    ensure_holidays(s)
+    for employee in frappe.get_all("Employee", filters={"status": "Active"}, pluck="name"):
+        # Savepoints isolate invalid existing employee configurations without losing the rest.
+        frappe.db.savepoint("rhp_provision")
+        try:
+            provision(frappe.get_doc("Employee", employee), s)
+        except Exception:
+            frappe.db.rollback(save_point="rhp_provision")
+            frappe.log_error(title=f"RHP setup failed: {employee}", message=frappe.get_traceback())
