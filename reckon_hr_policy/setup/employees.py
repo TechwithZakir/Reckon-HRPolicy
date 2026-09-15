@@ -9,6 +9,7 @@ from frappe.utils import getdate
 from reckon_hr_policy.utils.settings import policy_types, settings
 
 POLICY_FIELDS = (
+    "grade",
     "rhp_payroll_type",
     "rhp_attendance_policy",
     "rhp_hourly_rate",
@@ -49,8 +50,11 @@ def on_employee_update(doc, method=None):
 
 
 def provision(employee, s):
+    from reckon_hr_policy.grade_policy import change_date, same_compensation
+    from reckon_hr_policy.setup.grades import hydrate
     from reckon_hr_policy.setup.install import ensure_structure
 
+    employee, grade_profile = hydrate(employee, s)
     payroll_type, policy = policy_types(employee, s)
     # Employee row lock serializes scheduler, salary setup and Employee save.
     frappe.db.get_value("Employee", employee.name, "name", for_update=True)
@@ -64,9 +68,16 @@ def provision(employee, s):
     if not effective or amount <= 0:
         return
     effective = getdate(effective)
+    currency = employee.salary_currency or frappe.get_cached_value(
+        "Company", employee.company, "default_currency"
+    )
     existing = frappe.get_all(
         "Salary Structure Assignment",
-        filters={"employee": employee.name, "docstatus": 1, "from_date": ["<=", effective]},
+        filters={
+            "employee": employee.name,
+            "docstatus": 1,
+            **({} if grade_profile else {"from_date": ["<=", effective]}),
+        },
         fields=[
             "name",
             "from_date",
@@ -75,6 +86,8 @@ def provision(employee, s):
             "rhp_hourly_rate",
             "rhp_payroll_type",
             "rhp_attendance_policy",
+            "rhp_grade",
+            "currency",
         ],
         order_by="from_date desc",
         limit_page_length=1,
@@ -83,7 +96,39 @@ def provision(employee, s):
         previous = existing[0]
         if not previous.rhp_managed:
             return  # Existing native payroll is explicitly preserved.
-        if previous.from_date == effective:
+        if grade_profile:
+            if same_compensation(
+                previous,
+                grade=employee.grade,
+                amount=amount,
+                payroll_type=payroll_type,
+                attendance_policy=policy,
+                currency=currency,
+            ):
+                return
+            slips = frappe.get_all(
+                "Salary Slip",
+                filters={"employee": employee.name, "docstatus": 1},
+                fields=["end_date"],
+                order_by="end_date desc",
+                limit_page_length=1,
+            )
+            effective = change_date(
+                effective, getdate(), s.grade_change_timing, getdate(slips[0].end_date) if slips else None
+            )
+            if (
+                previous.from_date == effective
+                and effective > getdate()
+                and not frappe.db.exists(
+                    "Salary Slip",
+                    {"employee": employee.name, "docstatus": ["<", 2], "end_date": [">=", effective]},
+                )
+            ):
+                pending = frappe.get_doc("Salary Structure Assignment", previous.name)
+                pending.flags.ignore_permissions = True
+                pending.cancel()
+                previous = None
+        if previous and previous.from_date == effective:
             old_amount = previous.rhp_hourly_rate if payroll_type == "Hourly" else previous.base
             if (
                 float(old_amount or 0) != float(amount)
@@ -100,9 +145,6 @@ def provision(employee, s):
         frappe.throw(
             "Salary effective date overlaps submitted payroll. Use a future effective date or the native payroll correction process."
         )
-    currency = employee.salary_currency or frappe.get_cached_value(
-        "Company", employee.company, "default_currency"
-    )
     structure = ensure_structure(employee.company, currency, payroll_type)
     override = next((r for r in s.company_accounts if r.company == employee.company), None)
     assignment = frappe.get_doc(
@@ -115,6 +157,7 @@ def provision(employee, s):
             base=amount if payroll_type == "Monthly" else 0,
             currency=currency,
             rhp_managed=1,
+            rhp_grade=employee.grade if grade_profile else None,
             rhp_hourly_rate=employee.get("rhp_hourly_rate") or 0,
             rhp_payroll_type=payroll_type,
             rhp_attendance_policy=policy,
@@ -157,13 +200,15 @@ def schedule_saturdays(employee, s):
         day += timedelta(days=7)
 
 
-def maintain():
-    s = settings()
+def maintain(s=None):
+    s = s or settings()
     if not s.enabled:
         return
     from reckon_hr_policy.setup.install import ensure_holidays
+    from reckon_hr_policy.setup.native import ensure_payroll_periods
 
     ensure_holidays(s)
+    ensure_payroll_periods(s)
     for employee in frappe.get_all("Employee", filters={"status": "Active"}, pluck="name"):
         # Savepoints isolate invalid existing employee configurations without losing the rest.
         frappe.db.savepoint("rhp_provision")

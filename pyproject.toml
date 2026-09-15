@@ -12,7 +12,7 @@ requires = ["flit_core>=3.9,<4"]
 build-backend = "flit_core.buildapi"
 
 [tool.flit.sdist]
-include = ["tools/", "requirements.txt", "requirements-dev.txt", "COPYING"]
+include = ["tools/", "docs/", "requirements.txt", "requirements-dev.txt", "COPYING"]
 
 [tool.bench.frappe-dependencies]
 frappe = ">=16.33.1,<17.0.0"

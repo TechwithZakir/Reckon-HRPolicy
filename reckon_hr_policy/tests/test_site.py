@@ -12,6 +12,38 @@ from reckon_hr_policy.setup.install import setup
 
 
 class TestSite(HRMSTestSuite):
+    def test_grade_assignment_provisions_native_payroll(self):
+        from erpnext.setup.doctype.employee.test_employee import make_employee
+
+        from reckon_hr_policy.setup.employees import provision
+
+        setup()
+        s = frappe.get_doc("Reckon HR Policy Settings")
+        row = next(
+            row
+            for row in s.grade_policies
+            if row.company == "_Test Company" and row.payroll_type == "Monthly"
+        )
+        row.monthly_salary = 600
+        row.effective_from = getdate().replace(day=1)
+        s.save()
+        name = make_employee("rhp-grade-test@example.com", company="_Test Company", grade=row.grade_name)
+        employee = frappe.get_doc("Employee", name)
+        provision(employee, s)
+        assignments = frappe.get_all(
+            "Salary Structure Assignment",
+            filters={"employee": name, "docstatus": 1},
+            fields=["base", "rhp_grade", "rhp_payroll_type"],
+        )
+        self.assertEqual(len(assignments), 1)
+        self.assertEqual(assignments[0].base, 600)
+        self.assertEqual(assignments[0].rhp_grade, row.grade_name)
+        self.assertEqual(assignments[0].rhp_payroll_type, "Monthly")
+        provision(employee, s)
+        self.assertEqual(
+            frappe.db.count("Salary Structure Assignment", {"employee": name, "docstatus": 1}), 1
+        )
+
     def test_compatibility(self):
         self.assertTrue(all(v.startswith("16.") for v in check().values()))
 

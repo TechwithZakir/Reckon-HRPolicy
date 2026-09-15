@@ -47,6 +47,21 @@ class ReckonHRPolicySettings(Document):
         if not self.policy_effective_from:
             frappe.throw("Policy Effective From is required")
         getdate(self.policy_effective_from)
+        if not 1 <= int(self.payroll_year_start_month or 0) <= 12:
+            frappe.throw("Payroll Year Start Month must be between 1 and 12")
+        seen_grades = set()
+        for row in self.grade_policies:
+            if row.grade_name in seen_grades:
+                frappe.throw("Use a unique grade name for each company/currency policy row")
+            seen_grades.add(row.grade_name)
+            if not row.grade_name or len(row.grade_name) > 140:
+                frappe.throw("Grade Name must contain between 1 and 140 characters")
+            for field in ("monthly_salary", "hourly_rate"):
+                amount = float(row.get(field) or 0)
+                if amount < 0 or not math.isfinite(amount):
+                    frappe.throw("Grade compensation must be a finite nonnegative amount")
+            if not row.effective_from:
+                frappe.throw("Each grade requires an effective date")
         companies = set()
         for row in self.company_accounts:
             if row.company in companies:
@@ -67,6 +82,9 @@ class ReckonHRPolicySettings(Document):
         from reckon_hr_policy.setup.install import configure
 
         configure(self)
+        from reckon_hr_policy.setup.employees import maintain
+
+        maintain(self)
 
     @frappe.whitelist(methods=["POST"])
     def refresh_setup(self):

@@ -296,6 +296,81 @@
       "label": "Default Attendance Policy",
       "options": "Standard\nNo Attendance Deduction",
       "default": "Standard"
+    },
+    {
+      "fieldname": "grade_setup_section",
+      "fieldtype": "Section Break",
+      "label": "Grade Setup"
+    },
+    {
+      "fieldname": "auto_setup_from_grade",
+      "fieldtype": "Check",
+      "label": "Auto Setup From Grade",
+      "description": "Assign Employee Grade and save Employee to provision dated salary and policy automatically.",
+      "default": "1"
+    },
+    {
+      "fieldname": "grade_change_timing",
+      "fieldtype": "Select",
+      "label": "Grade Change Timing",
+      "options": "Next Month\nToday",
+      "description": "Changes to existing grade-based salary take effect next month by default; initial setup uses policy/grade/joining dates.",
+      "default": "Next Month"
+    },
+    {
+      "fieldname": "grade_policies",
+      "fieldtype": "Table",
+      "label": "Grade Policies",
+      "options": "Reckon HR Grade Policy",
+      "description": "App seeds Desk and Production Hourly grades for each company. Enter real grade salary/rates once here. Zero rates block salary provisioning, never guessed."
+    },
+    {
+      "fieldname": "native_payroll_setup_section",
+      "fieldtype": "Section Break",
+      "label": "Native Payroll Setup"
+    },
+    {
+      "fieldname": "manage_native_payroll_settings",
+      "fieldtype": "Check",
+      "label": "Manage Native Payroll Settings",
+      "description": "Applies the following three site-wide native Payroll Settings on setup/save. Turn off to manage them directly in HRMS.",
+      "default": "1"
+    },
+    {
+      "fieldname": "native_payroll_basis",
+      "fieldtype": "Select",
+      "label": "Native Payroll Basis",
+      "options": "Attendance\nLeave",
+      "reqd": 1,
+      "default": "Attendance"
+    },
+    {
+      "fieldname": "native_unmarked_as",
+      "fieldtype": "Select",
+      "label": "Native Unmarked As",
+      "options": "Present\nAbsent",
+      "reqd": 1,
+      "description": "Present prevents missing/unprocessed records from becoming automatic absence deductions.",
+      "default": "Present"
+    },
+    {
+      "fieldname": "native_include_holidays",
+      "fieldtype": "Check",
+      "label": "Native Include Holidays",
+      "default": "0"
+    },
+    {
+      "fieldname": "auto_create_payroll_periods",
+      "fieldtype": "Check",
+      "label": "Auto Create Payroll Periods",
+      "default": "1"
+    },
+    {
+      "fieldname": "payroll_year_start_month",
+      "fieldtype": "Int",
+      "label": "Payroll Year Start Month",
+      "description": "Month 1\u201312; creates current and next annual payroll periods only where no existing period overlaps.",
+      "default": "1"
     }
   ],
   "field_order": [
@@ -346,7 +421,18 @@
     "auto_assign_shifts",
     "employee_defaults_section",
     "default_payroll_type",
-    "default_attendance_policy"
+    "default_attendance_policy",
+    "grade_setup_section",
+    "auto_setup_from_grade",
+    "grade_change_timing",
+    "grade_policies",
+    "native_payroll_setup_section",
+    "manage_native_payroll_settings",
+    "native_payroll_basis",
+    "native_unmarked_as",
+    "native_include_holidays",
+    "auto_create_payroll_periods",
+    "payroll_year_start_month"
   ],
   "permissions": [
     {

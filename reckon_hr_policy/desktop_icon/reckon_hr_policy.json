@@ -1,0 +1,20 @@
+{
+  "doctype": "Desktop Icon",
+  "name": "Reckon HR Policy",
+  "label": "Reckon HR Policy",
+  "app": "reckon_hr_policy",
+  "standard": 1,
+  "icon_type": "Link",
+  "link_type": "Workspace Sidebar",
+  "link_to": "Reckon HR Policy",
+  "icon": "users",
+  "hidden": 0,
+  "roles": [
+    {
+      "role": "HR Manager"
+    },
+    {
+      "role": "System Manager"
+    }
+  ]
+}

@@ -11,7 +11,7 @@ jobs:
         with:
           python-version: '3.14'
       - run: python -m pip install -r requirements-dev.txt
-      - run: python -m unittest reckon_hr_policy.tests.test_policy reckon_hr_policy.tests.test_metadata -v
+      - run: python -m unittest reckon_hr_policy.tests.test_policy reckon_hr_policy.tests.test_metadata reckon_hr_policy.tests.test_effectiveness reckon_hr_policy.tests.test_grade_policy -v
       - run: python -m compileall -q reckon_hr_policy tools
       - run: ruff check reckon_hr_policy tools
       - run: ruff format --check reckon_hr_policy tools

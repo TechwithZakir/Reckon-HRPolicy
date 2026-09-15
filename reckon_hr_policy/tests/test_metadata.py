@@ -9,6 +9,29 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class TestMetadata(unittest.TestCase):
+    def test_homepage_reports_precede_payroll(self):
+        path = ROOT / "reckon_hr_policy/workspace/reckon_hr_policy/reckon_hr_policy.json"
+        doc = json.loads(path.read_text(encoding="utf-8"))
+        targets = [row["link_to"] for row in doc["shortcuts"]]
+        self.assertLess(
+            targets.index("Reckon HR Policy Effectiveness Report"), targets.index("Payroll Entry")
+        )
+        for doctype in (
+            "Employee Grade",
+            "Salary Component",
+            "Salary Structure",
+            "Salary Structure Assignment",
+            "Shift Type",
+            "Shift Assignment",
+            "Holiday List",
+            "Holiday List Assignment",
+            "Employee Checkin",
+            "Attendance",
+            "Salary Slip",
+            "Reckon HR Attendance Summary",
+        ):
+            self.assertIn(doctype, targets)
+
     def test_hooks_resolve_to_python_files_and_symbols(self):
         from reckon_hr_policy import hooks
 

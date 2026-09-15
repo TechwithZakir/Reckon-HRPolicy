@@ -18,6 +18,7 @@ extend_doctype_class = {
     "Employee Checkin": ["reckon_hr_policy.attendance.checkout.PolicyCheckinMixin"],
 }
 doc_events = {
+    "Company": {"after_insert": "reckon_hr_policy.setup.native.company_created"},
     "Employee": {
         "validate": "reckon_hr_policy.setup.employees.validate_employee",
         "on_update": "reckon_hr_policy.setup.employees.on_employee_update",

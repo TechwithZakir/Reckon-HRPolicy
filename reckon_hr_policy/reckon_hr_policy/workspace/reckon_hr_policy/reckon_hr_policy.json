@@ -7,7 +7,7 @@
   "public": 1,
   "icon": "hr",
   "is_hidden": 0,
-  "content": "[{\"id\": \"rhp-0\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Policy Settings\", \"col\": 3}}, {\"id\": \"rhp-1\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Attendance Summary\", \"col\": 3}}, {\"id\": \"rhp-2\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Employee\", \"col\": 3}}, {\"id\": \"rhp-3\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Employee Checkin\", \"col\": 3}}, {\"id\": \"rhp-4\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Attendance\", \"col\": 3}}, {\"id\": \"rhp-5\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Salary Slip\", \"col\": 3}}, {\"id\": \"rhp-6\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Payroll Entry\", \"col\": 3}}]",
+  "content": "[{\"id\": \"stage-0\", \"type\": \"header\", \"data\": {\"text\": \"<span class=\\\"h4\\\"><b>01 \\u00b7 Review policy and grade setup</b></span>\", \"col\": 12}}, {\"id\": \"step-0-0\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Policy and Grade Settings\", \"col\": 4}}, {\"id\": \"step-0-1\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Employee Grades\", \"col\": 4}}, {\"id\": \"step-0-2\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Companies and Accounts\", \"col\": 4}}, {\"id\": \"step-0-3\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Native HR Settings\", \"col\": 4}}, {\"id\": \"step-0-4\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Native Payroll Settings\", \"col\": 4}}, {\"id\": \"stage-1\", \"type\": \"header\", \"data\": {\"text\": \"<span class=\\\"h4\\\"><b>02 \\u00b7 Assign employee grades and inspect generated setup</b></span>\", \"col\": 12}}, {\"id\": \"step-1-0\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Assign Grade to Employee\", \"col\": 4}}, {\"id\": \"step-1-1\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Salary Structure Assignments\", \"col\": 4}}, {\"id\": \"step-1-2\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Salary Structures\", \"col\": 4}}, {\"id\": \"step-1-3\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Salary Components\", \"col\": 4}}, {\"id\": \"step-1-4\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Shift Types\", \"col\": 4}}, {\"id\": \"step-1-5\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Shift Assignments\", \"col\": 4}}, {\"id\": \"step-1-6\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Holiday Lists\", \"col\": 4}}, {\"id\": \"step-1-7\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Holiday List Assignments\", \"col\": 4}}, {\"id\": \"stage-2\", \"type\": \"header\", \"data\": {\"text\": \"<span class=\\\"h4\\\"><b>03 \\u00b7 Complete attendance and approved hours</b></span>\", \"col\": 12}}, {\"id\": \"step-2-0\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Employee Checkins\", \"col\": 4}}, {\"id\": \"step-2-1\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Attendance\", \"col\": 4}}, {\"id\": \"step-2-2\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Timesheets for Hourly Payroll\", \"col\": 4}}, {\"id\": \"step-2-3\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Leave Applications\", \"col\": 4}}, {\"id\": \"stage-3\", \"type\": \"header\", \"data\": {\"text\": \"<span class=\\\"h4\\\"><b>04 \\u00b7 Review reports before processing salary</b></span>\", \"col\": 12}}, {\"id\": \"step-3-0\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Policy Effectiveness and Smart Help\", \"col\": 4}}, {\"id\": \"step-3-1\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Attendance Policy Breakdown\", \"col\": 4}}, {\"id\": \"step-3-2\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Monthly Attendance Sheet\", \"col\": 4}}, {\"id\": \"stage-4\", \"type\": \"header\", \"data\": {\"text\": \"<span class=\\\"h4\\\"><b>05 \\u00b7 Process salary and retain audit</b></span>\", \"col\": 12}}, {\"id\": \"step-4-0\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Payroll Entry\", \"col\": 4}}, {\"id\": \"step-4-1\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Salary Slips\", \"col\": 4}}, {\"id\": \"step-4-2\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Submitted Policy Snapshots\", \"col\": 4}}, {\"id\": \"stage-5\", \"type\": \"header\", \"data\": {\"text\": \"<span class=\\\"h4\\\"><b>06 \\u00b7 Supporting payroll configuration and diagnostics</b></span>\", \"col\": 12}}, {\"id\": \"step-5-0\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Payroll Periods\", \"col\": 4}}, {\"id\": \"step-5-1\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Income Tax Slabs\", \"col\": 4}}, {\"id\": \"step-5-2\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Additional Salary\", \"col\": 4}}, {\"id\": \"step-5-3\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Ledger Accounts\", \"col\": 4}}, {\"id\": \"step-5-4\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Scheduled Jobs\", \"col\": 4}}, {\"id\": \"step-5-5\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Custom Fields\", \"col\": 4}}, {\"id\": \"step-5-6\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Setup and Checkout Error Log\", \"col\": 4}}]",
   "roles": [
     {
       "role": "HR Manager"
@@ -18,25 +18,85 @@
   ],
   "shortcuts": [
     {
-      "label": "Policy Settings",
+      "label": "Policy and Grade Settings",
       "type": "DocType",
       "link_to": "Reckon HR Policy Settings",
       "doc_view": "List"
     },
     {
-      "label": "Attendance Summary",
+      "label": "Employee Grades",
       "type": "DocType",
-      "link_to": "Reckon HR Attendance Summary",
+      "link_to": "Employee Grade",
       "doc_view": "List"
     },
     {
-      "label": "Employee",
+      "label": "Companies and Accounts",
+      "type": "DocType",
+      "link_to": "Company",
+      "doc_view": "List"
+    },
+    {
+      "label": "Native HR Settings",
+      "type": "DocType",
+      "link_to": "HR Settings",
+      "doc_view": "List"
+    },
+    {
+      "label": "Native Payroll Settings",
+      "type": "DocType",
+      "link_to": "Payroll Settings",
+      "doc_view": "List"
+    },
+    {
+      "label": "Assign Grade to Employee",
       "type": "DocType",
       "link_to": "Employee",
       "doc_view": "List"
     },
     {
-      "label": "Employee Checkin",
+      "label": "Salary Structure Assignments",
+      "type": "DocType",
+      "link_to": "Salary Structure Assignment",
+      "doc_view": "List"
+    },
+    {
+      "label": "Salary Structures",
+      "type": "DocType",
+      "link_to": "Salary Structure",
+      "doc_view": "List"
+    },
+    {
+      "label": "Salary Components",
+      "type": "DocType",
+      "link_to": "Salary Component",
+      "doc_view": "List"
+    },
+    {
+      "label": "Shift Types",
+      "type": "DocType",
+      "link_to": "Shift Type",
+      "doc_view": "List"
+    },
+    {
+      "label": "Shift Assignments",
+      "type": "DocType",
+      "link_to": "Shift Assignment",
+      "doc_view": "List"
+    },
+    {
+      "label": "Holiday Lists",
+      "type": "DocType",
+      "link_to": "Holiday List",
+      "doc_view": "List"
+    },
+    {
+      "label": "Holiday List Assignments",
+      "type": "DocType",
+      "link_to": "Holiday List Assignment",
+      "doc_view": "List"
+    },
+    {
+      "label": "Employee Checkins",
       "type": "DocType",
       "link_to": "Employee Checkin",
       "doc_view": "List"
@@ -48,29 +108,332 @@
       "doc_view": "List"
     },
     {
-      "label": "Salary Slip",
+      "label": "Timesheets for Hourly Payroll",
       "type": "DocType",
-      "link_to": "Salary Slip",
+      "link_to": "Timesheet",
       "doc_view": "List"
+    },
+    {
+      "label": "Leave Applications",
+      "type": "DocType",
+      "link_to": "Leave Application",
+      "doc_view": "List"
+    },
+    {
+      "label": "Policy Effectiveness and Smart Help",
+      "type": "Report",
+      "link_to": "Reckon HR Policy Effectiveness Report",
+      "report_ref_doctype": "Employee"
+    },
+    {
+      "label": "Attendance Policy Breakdown",
+      "type": "Report",
+      "link_to": "Reckon HR Attendance Policy Report",
+      "report_ref_doctype": "Employee"
+    },
+    {
+      "label": "Monthly Attendance Sheet",
+      "type": "Report",
+      "link_to": "Monthly Attendance Sheet",
+      "report_ref_doctype": "Attendance"
     },
     {
       "label": "Payroll Entry",
       "type": "DocType",
       "link_to": "Payroll Entry",
       "doc_view": "List"
+    },
+    {
+      "label": "Salary Slips",
+      "type": "DocType",
+      "link_to": "Salary Slip",
+      "doc_view": "List"
+    },
+    {
+      "label": "Submitted Policy Snapshots",
+      "type": "DocType",
+      "link_to": "Reckon HR Attendance Summary",
+      "doc_view": "List"
+    },
+    {
+      "label": "Payroll Periods",
+      "type": "DocType",
+      "link_to": "Payroll Period",
+      "doc_view": "List"
+    },
+    {
+      "label": "Income Tax Slabs",
+      "type": "DocType",
+      "link_to": "Income Tax Slab",
+      "doc_view": "List"
+    },
+    {
+      "label": "Additional Salary",
+      "type": "DocType",
+      "link_to": "Additional Salary",
+      "doc_view": "List"
+    },
+    {
+      "label": "Ledger Accounts",
+      "type": "DocType",
+      "link_to": "Account",
+      "doc_view": "List"
+    },
+    {
+      "label": "Scheduled Jobs",
+      "type": "DocType",
+      "link_to": "Scheduled Job Type",
+      "doc_view": "List"
+    },
+    {
+      "label": "Custom Fields",
+      "type": "DocType",
+      "link_to": "Custom Field",
+      "doc_view": "List"
+    },
+    {
+      "label": "Setup and Checkout Error Log",
+      "type": "DocType",
+      "link_to": "Error Log",
+      "doc_view": "List"
     }
   ],
   "links": [
     {
       "type": "Card Break",
-      "label": "Reports"
+      "label": "01 \u00b7 Review policy and grade setup"
     },
     {
       "type": "Link",
-      "label": "Reckon HR Attendance Policy Report",
+      "label": "Policy and Grade Settings",
+      "link_type": "DocType",
+      "link_to": "Reckon HR Policy Settings",
+      "is_query_report": 0
+    },
+    {
+      "type": "Link",
+      "label": "Employee Grades",
+      "link_type": "DocType",
+      "link_to": "Employee Grade",
+      "is_query_report": 0
+    },
+    {
+      "type": "Link",
+      "label": "Companies and Accounts",
+      "link_type": "DocType",
+      "link_to": "Company",
+      "is_query_report": 0
+    },
+    {
+      "type": "Link",
+      "label": "Native HR Settings",
+      "link_type": "DocType",
+      "link_to": "HR Settings",
+      "is_query_report": 0
+    },
+    {
+      "type": "Link",
+      "label": "Native Payroll Settings",
+      "link_type": "DocType",
+      "link_to": "Payroll Settings",
+      "is_query_report": 0
+    },
+    {
+      "type": "Card Break",
+      "label": "02 \u00b7 Assign employee grades and inspect generated setup"
+    },
+    {
+      "type": "Link",
+      "label": "Assign Grade to Employee",
+      "link_type": "DocType",
+      "link_to": "Employee",
+      "is_query_report": 0
+    },
+    {
+      "type": "Link",
+      "label": "Salary Structure Assignments",
+      "link_type": "DocType",
+      "link_to": "Salary Structure Assignment",
+      "is_query_report": 0
+    },
+    {
+      "type": "Link",
+      "label": "Salary Structures",
+      "link_type": "DocType",
+      "link_to": "Salary Structure",
+      "is_query_report": 0
+    },
+    {
+      "type": "Link",
+      "label": "Salary Components",
+      "link_type": "DocType",
+      "link_to": "Salary Component",
+      "is_query_report": 0
+    },
+    {
+      "type": "Link",
+      "label": "Shift Types",
+      "link_type": "DocType",
+      "link_to": "Shift Type",
+      "is_query_report": 0
+    },
+    {
+      "type": "Link",
+      "label": "Shift Assignments",
+      "link_type": "DocType",
+      "link_to": "Shift Assignment",
+      "is_query_report": 0
+    },
+    {
+      "type": "Link",
+      "label": "Holiday Lists",
+      "link_type": "DocType",
+      "link_to": "Holiday List",
+      "is_query_report": 0
+    },
+    {
+      "type": "Link",
+      "label": "Holiday List Assignments",
+      "link_type": "DocType",
+      "link_to": "Holiday List Assignment",
+      "is_query_report": 0
+    },
+    {
+      "type": "Card Break",
+      "label": "03 \u00b7 Complete attendance and approved hours"
+    },
+    {
+      "type": "Link",
+      "label": "Employee Checkins",
+      "link_type": "DocType",
+      "link_to": "Employee Checkin",
+      "is_query_report": 0
+    },
+    {
+      "type": "Link",
+      "label": "Attendance",
+      "link_type": "DocType",
+      "link_to": "Attendance",
+      "is_query_report": 0
+    },
+    {
+      "type": "Link",
+      "label": "Timesheets for Hourly Payroll",
+      "link_type": "DocType",
+      "link_to": "Timesheet",
+      "is_query_report": 0
+    },
+    {
+      "type": "Link",
+      "label": "Leave Applications",
+      "link_type": "DocType",
+      "link_to": "Leave Application",
+      "is_query_report": 0
+    },
+    {
+      "type": "Card Break",
+      "label": "04 \u00b7 Review reports before processing salary"
+    },
+    {
+      "type": "Link",
+      "label": "Policy Effectiveness and Smart Help",
+      "link_type": "Report",
+      "link_to": "Reckon HR Policy Effectiveness Report",
+      "is_query_report": 1
+    },
+    {
+      "type": "Link",
+      "label": "Attendance Policy Breakdown",
       "link_type": "Report",
       "link_to": "Reckon HR Attendance Policy Report",
       "is_query_report": 1
+    },
+    {
+      "type": "Link",
+      "label": "Monthly Attendance Sheet",
+      "link_type": "Report",
+      "link_to": "Monthly Attendance Sheet",
+      "is_query_report": 1
+    },
+    {
+      "type": "Card Break",
+      "label": "05 \u00b7 Process salary and retain audit"
+    },
+    {
+      "type": "Link",
+      "label": "Payroll Entry",
+      "link_type": "DocType",
+      "link_to": "Payroll Entry",
+      "is_query_report": 0
+    },
+    {
+      "type": "Link",
+      "label": "Salary Slips",
+      "link_type": "DocType",
+      "link_to": "Salary Slip",
+      "is_query_report": 0
+    },
+    {
+      "type": "Link",
+      "label": "Submitted Policy Snapshots",
+      "link_type": "DocType",
+      "link_to": "Reckon HR Attendance Summary",
+      "is_query_report": 0
+    },
+    {
+      "type": "Card Break",
+      "label": "06 \u00b7 Supporting payroll configuration and diagnostics"
+    },
+    {
+      "type": "Link",
+      "label": "Payroll Periods",
+      "link_type": "DocType",
+      "link_to": "Payroll Period",
+      "is_query_report": 0
+    },
+    {
+      "type": "Link",
+      "label": "Income Tax Slabs",
+      "link_type": "DocType",
+      "link_to": "Income Tax Slab",
+      "is_query_report": 0
+    },
+    {
+      "type": "Link",
+      "label": "Additional Salary",
+      "link_type": "DocType",
+      "link_to": "Additional Salary",
+      "is_query_report": 0
+    },
+    {
+      "type": "Link",
+      "label": "Ledger Accounts",
+      "link_type": "DocType",
+      "link_to": "Account",
+      "is_query_report": 0
+    },
+    {
+      "type": "Link",
+      "label": "Scheduled Jobs",
+      "link_type": "DocType",
+      "link_to": "Scheduled Job Type",
+      "is_query_report": 0
+    },
+    {
+      "type": "Link",
+      "label": "Custom Fields",
+      "link_type": "DocType",
+      "link_to": "Custom Field",
+      "is_query_report": 0
+    },
+    {
+      "type": "Link",
+      "label": "Setup and Checkout Error Log",
+      "link_type": "DocType",
+      "link_to": "Error Log",
+      "is_query_report": 0
     }
-  ]
+  ],
+  "app": "reckon_hr_policy",
+  "type": "Workspace"
 }

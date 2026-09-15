@@ -20,14 +20,17 @@ def reject_reserved_components(doc, method=None):
 
 
 def reject_structure_policy_rows(doc, method=None):
-    if any(
-        row.salary_component in POLICY_COMPONENTS
-        for table in ("earnings", "deductions")
-        for row in doc.get(table)
-    ):
-        frappe.throw(
-            "RHP policy components are inserted by the payroll engine and must not be added to Salary Structures"
-        )
+    from reckon_hr_policy.payroll.formulas import POLICY_FORMULAS
+
+    seen = set()
+    for table in ("earnings", "deductions"):
+        for row in doc.get(table):
+            if row.salary_component not in POLICY_COMPONENTS:
+                continue
+            condition, formula = POLICY_FORMULAS[row.salary_component]
+            if row.salary_component in seen or not row.amount_based_on_formula or row.formula != formula or row.condition != condition or row.depends_on_payment_days:
+                frappe.throw("RHP policy rows require the managed condition/formula and no payment-day proration. Run RHP setup to reconcile them.")
+            seen.add(row.salary_component)
 
 
 class PolicySalarySlipMixin:
@@ -41,6 +44,7 @@ class PolicySalarySlipMixin:
         self.rhp_calculation_hash = None
         self._rhp_result = None
         self._rhp_applied = False
+        self._rhp_formula_context = None
         # Native SSA evaluation is cached on the document; reset it between calculations.
         self._evaluated_components = None
         self._ssa_doc = None
@@ -64,6 +68,20 @@ class PolicySalarySlipMixin:
             self.apply_reckon_policy()
         return result
 
+    def add_structure_component(self, struct_row, component_type):
+        if struct_row.salary_component in POLICY_COMPONENTS:
+            return  # Defer only policy rows until native non-policy earnings are evaluated.
+        return super().add_structure_component(struct_row, component_type)
+
+    def get_data_for_eval(self):
+        from reckon_hr_policy.payroll.formulas import empty_context
+
+        data, defaults = super().get_data_for_eval()
+        context = getattr(self, "_rhp_formula_context", None) or {**empty_context(), "rhp_assignment_preview": 0}
+        data.update(context)
+        defaults.update(context)
+        return data, defaults
+
     def apply_reckon_policy(self):
         s = settings()
         if not s.enabled or getdate(self.end_date) < getdate(s.policy_effective_from):
@@ -77,9 +95,13 @@ class PolicySalarySlipMixin:
         reject_structure_policy_rows(frappe.get_cached_doc("Salary Structure", self.salary_structure))
         # Effective-dated assignment values beat today's employee defaults.
         employee = frappe._dict(employee.as_dict())
+        from reckon_hr_policy.utils.settings import policy_types
+
+        employee.rhp_payroll_type, employee.rhp_attendance_policy = policy_types(employee, s)
         for field in ("rhp_payroll_type", "rhp_attendance_policy"):
             if assignment.get(field):
                 employee[field] = assignment.get(field)
+        employee._rhp_assignment_policy = True
         if bool(self.salary_slip_based_on_timesheet) != (
             (employee.rhp_payroll_type or s.default_payroll_type) == "Hourly"
         ):
@@ -169,27 +191,21 @@ class PolicySalarySlipMixin:
             if s.daily_allowance_enabled and summary["payroll_type"] == "Monthly"
             else 0
         )
-        amounts = {
-            "RHP Daily Allowance": summary["daily_allowance_amount"],
-            "RHP Policy Overtime": flt(summary["ot_amount"], precision),
-            "RHP Late Deduction": summary["late_deduction_amount"],
-            "RHP Early Exit Deduction": summary["early_deduction_amount"],
-            "RHP Break Deduction": summary["break_deduction_amount"],
-        }
+        from reckon_hr_policy.payroll.formulas import POLICY_FORMULAS, period_context
         from hrms.payroll.doctype.salary_slip.salary_slip import get_salary_component_data
 
-        for component, amount in amounts.items():
-            if not amount:
-                continue
+        self._rhp_formula_context = period_context(summary, s)
+        summary["formula_context"] = self._rhp_formula_context.copy()
+        summary["component_formulas"] = {}
+        for component in POLICY_COMPONENTS:
             if not frappe.get_cached_value("Salary Component", component, "rhp_managed"):
                 frappe.throw(f"Missing or unowned policy component: {component}; run RHP setup")
             data = get_salary_component_data(component)
-            data.depends_on_payment_days = 0  # Already evaluated against native payment days.
+            condition, formula = POLICY_FORMULAS[component]
+            data.update(condition=condition, formula=formula, amount_based_on_formula=1, amount=0,
+                        default_amount=0, precision=precision, statistical_component=0, depends_on_payment_days=0)
             data.deduct_full_tax_on_selected_payroll_date = 0
-            self.update_component_row(
-                data,
-                amount,
-                "deductions" if component.endswith("Deduction") else "earnings",
-                default_amount=amount,
-            )
+            self.data, self.default_data = self.get_data_for_eval()
+            super().add_structure_component(data, "deductions" if component.endswith("Deduction") else "earnings")
+            summary["component_formulas"][component] = dict(condition=condition, formula=formula)
         self._rhp_result = summary

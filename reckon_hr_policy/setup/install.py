@@ -9,6 +9,7 @@ from frappe.custom.doctype.custom_field.custom_field import create_custom_fields
 from frappe.utils import getdate
 
 from reckon_hr_policy.setup.compatibility import check
+from reckon_hr_policy.payroll.formulas import POLICY_FORMULAS
 
 COMPONENTS = {
     "RHP Daily Allowance": ("Earning", "RHPDA"),
@@ -21,6 +22,8 @@ COMPONENTS = {
 }
 POLICY_COMPONENTS = tuple(COMPONENTS)[:5]
 MANAGED_DOCTYPES = (
+    "Payroll Period",
+    "Employee Grade",
     "Salary Component",
     "Salary Structure",
     "Salary Structure Assignment",
@@ -50,7 +53,7 @@ def custom_fields():
             "Select",
             options="\nMonthly\nHourly",
             permlevel=1,
-            description="Blank uses central default; no grade-based behavior.",
+            description="Mapped Employee Grade takes priority; otherwise blank uses central default.",
         ),
         cf("rhp_attendance_policy", "Select", options="\nStandard\nNo Attendance Deduction", permlevel=1),
         cf("rhp_hourly_rate", "Currency", options="salary_currency", permlevel=1),
@@ -70,6 +73,7 @@ def custom_fields():
     ]
     fields["Employee"][0].pop("label_override")
     fields["Salary Structure Assignment"] += [
+        cf("rhp_grade", "Link", options="Employee Grade", read_only=1),
         cf("rhp_hourly_rate", "Currency", options="currency", read_only=1),
         cf("rhp_payroll_type", "Select", options="\nMonthly\nHourly", read_only=1),
         cf("rhp_attendance_policy", "Select", options="\nStandard\nNo Attendance Deduction", read_only=1),
@@ -138,17 +142,53 @@ def ensure_structure(company, currency, payroll_type):
     )
     if payroll_type == "Hourly":
         values.update(salary_component="RHP Hourly Wages", hour_rate=0)
-    else:
-        values["earnings"] = [
-            dict(
-                salary_component="RHP Basic Salary",
-                abbr="RHPBS",
-                amount_based_on_formula=1,
-                formula="base",
-                depends_on_payment_days=1,
-            )
-        ]
-    return owned("Salary Structure", structure_name(company, currency, payroll_type), values, submit=True)
+    wage = "RHP Hourly Wages" if payroll_type == "Hourly" else "RHP Basic Salary"
+    desired = {"earnings": [], "deductions": []}
+    for component in (wage, *POLICY_COMPONENTS):
+        kind, abbr = COMPONENTS[component]
+        condition, formula = POLICY_FORMULAS[component]
+        desired["earnings" if kind == "Earning" else "deductions"].append(dict(
+            salary_component=component, abbr=abbr, amount=0, amount_based_on_formula=1,
+            condition=condition, formula=formula,
+            depends_on_payment_days=int(component == "RHP Basic Salary"),
+        ))
+    name = structure_name(company, currency, payroll_type)
+    if not frappe.db.exists("Salary Structure", name):
+        return owned("Salary Structure", name, {**values, **desired}, submit=True)
+    doc = frappe.get_doc("Salary Structure", name)
+    if not doc.get("rhp_managed") or doc.docstatus == 2:
+        frappe.throw(f"Cannot reconcile unowned or cancelled Salary Structure: {name}")
+    changed = any(doc.get(key) != value for key, value in values.items())
+    doc.update(values)
+    # Reconcile only our rows, retaining other native components and their settings.
+    for table, expected in desired.items():
+        current = {row.salary_component: row for row in doc.get(table)}
+        seen = set()
+        retained = []
+        for row in doc.get(table):
+            if row.salary_component in COMPONENTS:
+                if row.salary_component in seen or row.salary_component not in {r["salary_component"] for r in expected}:
+                    changed = True
+                    continue
+                seen.add(row.salary_component)
+            retained.append(row)
+        doc.set(table, retained)
+        for values_row in expected:
+            row = current.get(values_row["salary_component"])
+            if row is None:
+                doc.append(table, values_row)
+                changed = True
+            elif any(row.get(key) != value for key, value in values_row.items()):
+                row.update(values_row)
+                changed = True
+    if changed:
+        # Explicit app-owned template upgrade only; never set this on slips/assignments.
+        doc.flags.ignore_validate_update_after_submit = True
+        doc.save(ignore_permissions=True)
+        frappe.clear_document_cache("Salary Structure", name)
+    if doc.docstatus == 0:
+        doc.submit()
+    return doc
 
 
 def configure(s):
@@ -163,6 +203,10 @@ def configure(s):
                 kind == "Earning" and (name not in POLICY_COMPONENTS or s.policy_earnings_taxable)
             ),
             remove_if_zero_valued=1,
+            amount=0,
+            amount_based_on_formula=1,
+            condition=POLICY_FORMULAS[name][0],
+            formula=POLICY_FORMULAS[name][1],
         )
         component = owned("Salary Component", name, values, update=True)
         mappings = {row.company: row for row in s.company_accounts}
@@ -211,6 +255,12 @@ def configure(s):
     for company in frappe.get_all("Company", fields=["name", "default_currency"]):
         for category in ("Monthly", "Hourly"):
             ensure_structure(company.name, company.default_currency, category)
+    from reckon_hr_policy.setup.grades import configure_grades
+
+    configure_grades(s)
+    from reckon_hr_policy.setup.native import configure_native
+
+    configure_native(s)
     refresh_status(s)
 
 
@@ -278,6 +328,11 @@ def ensure_holidays(s):
 
 def refresh_status(s):
     warnings = []
+    for profile in s.grade_policies:
+        if not (profile.hourly_rate if profile.payroll_type == "Hourly" else profile.monthly_salary):
+            warnings.append(
+                f"{profile.grade_name}: enter actual {'hourly rate' if profile.payroll_type == 'Hourly' else 'monthly salary'} in Grade Setup before assigning employees for payroll"
+            )
     for company in frappe.get_all(
         "Company", fields=["name", "default_expense_account", "default_payroll_payable_account"]
     ):
@@ -308,8 +363,29 @@ def setup():
     try:
         custom_fields()
         s = frappe.get_doc("Reckon HR Policy Settings")
+        stored = frappe.db.get_singles_dict("Reckon HR Policy Settings")
+        if "auto_setup_from_grade" not in stored:
+            s.auto_setup_from_grade = 1
+        if not s.grade_change_timing:
+            s.grade_change_timing = "Next Month"
+        for key, value in {
+            "manage_native_payroll_settings": 1,
+            "native_payroll_basis": "Attendance",
+            "native_unmarked_as": "Present",
+            "native_include_holidays": 0,
+            "auto_create_payroll_periods": 1,
+            "payroll_year_start_month": 1,
+        }.items():
+            if key not in stored:
+                s.set(key, value)
         if not s.policy_effective_from:
             s.policy_effective_from = getdate()
+        from reckon_hr_policy.setup.grades import seed_profiles
+
+        seed_profiles(s)
+        from reckon_hr_policy.setup.native import seed_accounts
+
+        seed_accounts(s)
         s.save(ignore_permissions=True)
         configure(s)
         frappe.db.add_index("Employee Checkin", ["employee", "time"], "rhp_employee_time")

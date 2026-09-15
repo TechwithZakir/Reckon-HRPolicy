@@ -23,7 +23,11 @@ def collect(employees, start, end, s=None):
     names = [e.name for e in employees]
     attendance = frappe.get_all(
         "Attendance",
-        filters={"employee": ["in", names], "attendance_date": ["between", [start, end]], "docstatus": 1},
+        filters={
+            "employee": ["in", names],
+            "attendance_date": ["between", [start, end]],
+            "docstatus": ["<", 2],
+        },
         fields=[
             "name",
             "employee",
@@ -33,6 +37,7 @@ def collect(employees, start, end, s=None):
             "early_exit",
             "shift",
             "modified",
+            "docstatus",
         ],
         order_by="employee,attendance_date,name",
     )
@@ -98,9 +103,25 @@ def collect(employees, start, end, s=None):
             ot_amount=0.0,
             evidence=[],
             excluded_shifts=[],
+            submitted_attendance_dates=0,
+            draft_attendance_records=0,
+            absent_dates=0,
+            half_day_dates=0,
+            on_leave_dates=0,
         )
         late_dates, early_dates = set(), set()
+        submitted_dates, absent_dates, half_dates, leave_dates = set(), set(), set(), set()
         for row in by_employee[employee.name]:
+            if row.docstatus != 1:
+                result["draft_attendance_records"] += 1
+                continue
+            submitted_dates.add(row.attendance_date)
+            if row.status == "Absent":
+                absent_dates.add(row.attendance_date)
+            elif row.status == "Half Day":
+                half_dates.add(row.attendance_date)
+            elif row.status == "On Leave":
+                leave_dates.add(row.attendance_date)
             if is_holiday(employee.name, row.attendance_date, row.shift, holidays, r) or row.status not in (
                 "Present",
                 "Half Day",
@@ -121,6 +142,12 @@ def collect(employees, start, end, s=None):
                 )
             )
         result["late_entries"], result["early_exits"] = len(late_dates), len(early_dates)
+        result.update(
+            submitted_attendance_dates=len(submitted_dates),
+            absent_dates=len(absent_dates),
+            half_day_dates=len(half_dates),
+            on_leave_dates=len(leave_dates),
+        )
         for (shift, shift_start, shift_end), logs in shifts[employee.name].items():
             if any(log.skip_auto_attendance or log.offshift or log.rhp_auto_checkout_for for log in logs):
                 result["excluded_shifts"].append(

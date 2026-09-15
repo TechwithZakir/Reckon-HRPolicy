@@ -6,7 +6,8 @@ import frappe
 
 MINIMUMS = {"frappe": (16, 33, 1), "erpnext": (16, 34, 2), "hrms": (16, 18, 1)}
 REQUIRED_FIELDS = {
-    "Employee": "company salary_currency default_shift date_of_joining relieving_date",
+    "Employee Grade": "default_salary_structure default_base_pay currency",
+    "Employee": "company grade salary_currency default_shift date_of_joining relieving_date",
     "Employee Checkin": "employee time log_type shift shift_start shift_end skip_auto_attendance offshift attendance",
     "Attendance": "employee attendance_date status late_entry early_exit shift docstatus",
     "Shift Type": "start_time end_time enable_auto_attendance auto_update_last_sync process_attendance_after last_sync_of_checkin enable_late_entry_marking late_entry_grace_period enable_early_exit_marking early_exit_grace_period",

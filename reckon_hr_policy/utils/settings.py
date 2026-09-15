@@ -18,6 +18,12 @@ def require_manager():
 
 def policy_types(employee, doc=None):
     doc = doc or settings()
+    if not employee.get("_rhp_assignment_policy"):
+        from reckon_hr_policy.setup.grades import mapping
+
+        profile = mapping(employee, doc)
+        if profile:
+            return profile.payroll_type, profile.attendance_policy
     return (
         employee.get("rhp_payroll_type") or doc.default_payroll_type,
         employee.get("rhp_attendance_policy") or doc.default_attendance_policy,

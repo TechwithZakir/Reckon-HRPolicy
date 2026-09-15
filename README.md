@@ -2,6 +2,8 @@
 
 Installable Frappe custom app implementing configurable attendance consequences and payroll additions on top of Frappe HR v16. No core files, Server Scripts, monkey patches, or replacement payroll engine are used.
 
+**Before processing salary:** follow the [step-by-step policy testing guide](docs/HOW_TO_TEST.md). Open **Reckon HR Policy Effectiveness Report** for employee-wise applicability, submitted absence/half-day/leave dates, late/early/break deduction breakdowns, OT preview and **Smart Help** with next steps. Its readiness cards are diagnostic previews, not payroll approval.
+
 **Release status: 0.1.0 — implementation candidate, not production-certified.** The development workspace contains no installed Frappe site, Bench, database, Redis, or Linux runtime. Official upstream source was inspected instead. Standalone tests and source-contract checks can run here; installation, migration, native payroll, concurrency, tax, and permission tests must pass on the actual deployment site before production acceptance. Do not interpret a successful wheel build or source inspection as a successful site installation.
 
 ## Source inspected and compatibility boundary

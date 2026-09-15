@@ -48,7 +48,7 @@ def execute(filters=None):
         employees = frappe.get_list(
             "Employee",
             filters=employee_filters,
-            fields=["name", "employee_name", "company", "rhp_payroll_type", "rhp_attendance_policy"],
+            fields=["name", "employee_name", "company", "grade", "rhp_payroll_type", "rhp_attendance_policy"],
             order_by="name",
             limit_start=offset,
             limit_page_length=200,

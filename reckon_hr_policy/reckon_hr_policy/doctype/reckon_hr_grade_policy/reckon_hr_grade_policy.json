@@ -1,0 +1,103 @@
+{
+  "doctype": "DocType",
+  "name": "Reckon HR Grade Policy",
+  "module": "Reckon HR Policy",
+  "engine": "InnoDB",
+  "issingle": 0,
+  "istable": 1,
+  "track_changes": 1,
+  "fields": [
+    {
+      "fieldname": "grade_name",
+      "fieldtype": "Data",
+      "label": "Grade Name",
+      "reqd": 1,
+      "in_list_view": 1,
+      "description": "Native Employee Grade is created automatically if missing."
+    },
+    {
+      "fieldname": "company",
+      "fieldtype": "Link",
+      "label": "Company",
+      "options": "Company",
+      "reqd": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "currency",
+      "fieldtype": "Link",
+      "label": "Currency",
+      "options": "Currency",
+      "reqd": 1
+    },
+    {
+      "fieldname": "payroll_type",
+      "fieldtype": "Select",
+      "label": "Payroll Type",
+      "options": "Monthly\nHourly",
+      "reqd": 1,
+      "in_list_view": 1,
+      "default": "Monthly"
+    },
+    {
+      "fieldname": "attendance_policy",
+      "fieldtype": "Select",
+      "label": "Attendance Policy",
+      "options": "Standard\nNo Attendance Deduction",
+      "reqd": 1,
+      "default": "Standard"
+    },
+    {
+      "fieldname": "monthly_salary",
+      "fieldtype": "Currency",
+      "label": "Monthly Salary",
+      "options": "currency",
+      "in_list_view": 1,
+      "default": "0"
+    },
+    {
+      "fieldname": "hourly_rate",
+      "fieldtype": "Currency",
+      "label": "Hourly Rate",
+      "options": "currency",
+      "in_list_view": 1,
+      "default": "0"
+    },
+    {
+      "fieldname": "effective_from",
+      "fieldtype": "Date",
+      "label": "Effective From",
+      "reqd": 1,
+      "default": "Today"
+    },
+    {
+      "fieldname": "employee_grade",
+      "fieldtype": "Link",
+      "label": "Employee Grade",
+      "options": "Employee Grade",
+      "read_only": 1
+    },
+    {
+      "fieldname": "salary_structure",
+      "fieldtype": "Link",
+      "label": "Salary Structure",
+      "options": "Salary Structure",
+      "read_only": 1
+    }
+  ],
+  "field_order": [
+    "grade_name",
+    "company",
+    "currency",
+    "payroll_type",
+    "attendance_policy",
+    "monthly_salary",
+    "hourly_rate",
+    "effective_from",
+    "employee_grade",
+    "salary_structure"
+  ],
+  "permissions": [],
+  "sort_field": "modified",
+  "sort_order": "DESC"
+}

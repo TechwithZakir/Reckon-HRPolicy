@@ -1,0 +1,264 @@
+{
+  "doctype": "Workspace Sidebar",
+  "name": "Reckon HR Policy",
+  "title": "Reckon HR Policy",
+  "app": "reckon_hr_policy",
+  "module": "Reckon HR Policy",
+  "standard": 1,
+  "header_icon": "users",
+  "items": [
+    {
+      "type": "Link",
+      "label": "Home",
+      "link_type": "Workspace",
+      "link_to": "Reckon HR Policy",
+      "icon": "home"
+    },
+    {
+      "type": "Section Break",
+      "label": "01 \u00b7 Review policy and grade setup",
+      "collapsible": 1,
+      "keep_closed": 0
+    },
+    {
+      "type": "Link",
+      "label": "Policy and Grade Settings",
+      "link_type": "DocType",
+      "link_to": "Reckon HR Policy Settings",
+      "child": 1
+    },
+    {
+      "type": "Link",
+      "label": "Employee Grades",
+      "link_type": "DocType",
+      "link_to": "Employee Grade",
+      "child": 1
+    },
+    {
+      "type": "Link",
+      "label": "Companies and Accounts",
+      "link_type": "DocType",
+      "link_to": "Company",
+      "child": 1
+    },
+    {
+      "type": "Link",
+      "label": "Native HR Settings",
+      "link_type": "DocType",
+      "link_to": "HR Settings",
+      "child": 1
+    },
+    {
+      "type": "Link",
+      "label": "Native Payroll Settings",
+      "link_type": "DocType",
+      "link_to": "Payroll Settings",
+      "child": 1
+    },
+    {
+      "type": "Section Break",
+      "label": "02 \u00b7 Assign employee grades and inspect generated setup",
+      "collapsible": 1,
+      "keep_closed": 0
+    },
+    {
+      "type": "Link",
+      "label": "Assign Grade to Employee",
+      "link_type": "DocType",
+      "link_to": "Employee",
+      "child": 1
+    },
+    {
+      "type": "Link",
+      "label": "Salary Structure Assignments",
+      "link_type": "DocType",
+      "link_to": "Salary Structure Assignment",
+      "child": 1
+    },
+    {
+      "type": "Link",
+      "label": "Salary Structures",
+      "link_type": "DocType",
+      "link_to": "Salary Structure",
+      "child": 1
+    },
+    {
+      "type": "Link",
+      "label": "Salary Components",
+      "link_type": "DocType",
+      "link_to": "Salary Component",
+      "child": 1
+    },
+    {
+      "type": "Link",
+      "label": "Shift Types",
+      "link_type": "DocType",
+      "link_to": "Shift Type",
+      "child": 1
+    },
+    {
+      "type": "Link",
+      "label": "Shift Assignments",
+      "link_type": "DocType",
+      "link_to": "Shift Assignment",
+      "child": 1
+    },
+    {
+      "type": "Link",
+      "label": "Holiday Lists",
+      "link_type": "DocType",
+      "link_to": "Holiday List",
+      "child": 1
+    },
+    {
+      "type": "Link",
+      "label": "Holiday List Assignments",
+      "link_type": "DocType",
+      "link_to": "Holiday List Assignment",
+      "child": 1
+    },
+    {
+      "type": "Section Break",
+      "label": "03 \u00b7 Complete attendance and approved hours",
+      "collapsible": 1,
+      "keep_closed": 0
+    },
+    {
+      "type": "Link",
+      "label": "Employee Checkins",
+      "link_type": "DocType",
+      "link_to": "Employee Checkin",
+      "child": 1
+    },
+    {
+      "type": "Link",
+      "label": "Attendance",
+      "link_type": "DocType",
+      "link_to": "Attendance",
+      "child": 1
+    },
+    {
+      "type": "Link",
+      "label": "Timesheets for Hourly Payroll",
+      "link_type": "DocType",
+      "link_to": "Timesheet",
+      "child": 1
+    },
+    {
+      "type": "Link",
+      "label": "Leave Applications",
+      "link_type": "DocType",
+      "link_to": "Leave Application",
+      "child": 1
+    },
+    {
+      "type": "Section Break",
+      "label": "04 \u00b7 Review reports before processing salary",
+      "collapsible": 1,
+      "keep_closed": 0
+    },
+    {
+      "type": "Link",
+      "label": "Policy Effectiveness and Smart Help",
+      "link_type": "Report",
+      "link_to": "Reckon HR Policy Effectiveness Report",
+      "child": 1
+    },
+    {
+      "type": "Link",
+      "label": "Attendance Policy Breakdown",
+      "link_type": "Report",
+      "link_to": "Reckon HR Attendance Policy Report",
+      "child": 1
+    },
+    {
+      "type": "Link",
+      "label": "Monthly Attendance Sheet",
+      "link_type": "Report",
+      "link_to": "Monthly Attendance Sheet",
+      "child": 1
+    },
+    {
+      "type": "Section Break",
+      "label": "05 \u00b7 Process salary and retain audit",
+      "collapsible": 1,
+      "keep_closed": 0
+    },
+    {
+      "type": "Link",
+      "label": "Payroll Entry",
+      "link_type": "DocType",
+      "link_to": "Payroll Entry",
+      "child": 1
+    },
+    {
+      "type": "Link",
+      "label": "Salary Slips",
+      "link_type": "DocType",
+      "link_to": "Salary Slip",
+      "child": 1
+    },
+    {
+      "type": "Link",
+      "label": "Submitted Policy Snapshots",
+      "link_type": "DocType",
+      "link_to": "Reckon HR Attendance Summary",
+      "child": 1
+    },
+    {
+      "type": "Section Break",
+      "label": "06 \u00b7 Supporting payroll configuration and diagnostics",
+      "collapsible": 1,
+      "keep_closed": 0
+    },
+    {
+      "type": "Link",
+      "label": "Payroll Periods",
+      "link_type": "DocType",
+      "link_to": "Payroll Period",
+      "child": 1
+    },
+    {
+      "type": "Link",
+      "label": "Income Tax Slabs",
+      "link_type": "DocType",
+      "link_to": "Income Tax Slab",
+      "child": 1
+    },
+    {
+      "type": "Link",
+      "label": "Additional Salary",
+      "link_type": "DocType",
+      "link_to": "Additional Salary",
+      "child": 1
+    },
+    {
+      "type": "Link",
+      "label": "Ledger Accounts",
+      "link_type": "DocType",
+      "link_to": "Account",
+      "child": 1
+    },
+    {
+      "type": "Link",
+      "label": "Scheduled Jobs",
+      "link_type": "DocType",
+      "link_to": "Scheduled Job Type",
+      "child": 1
+    },
+    {
+      "type": "Link",
+      "label": "Custom Fields",
+      "link_type": "DocType",
+      "link_to": "Custom Field",
+      "child": 1
+    },
+    {
+      "type": "Link",
+      "label": "Setup and Checkout Error Log",
+      "link_type": "DocType",
+      "link_to": "Error Log",
+      "child": 1
+    }
+  ]
+}
