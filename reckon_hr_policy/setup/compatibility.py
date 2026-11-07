@@ -34,7 +34,11 @@ def check():
             frappe.throw(
                 f"Reckon HR Policy needs {app} >= {'.'.join(map(str, minimum))}, <17; found {module.__version__}"
             )
-    from frappe.model.base_document import _get_extended_class
+    try:
+        from frappe.model.base_document import _get_extended_class
+    except ImportError:
+        # Frappe 16.55+ moved the extended-doctype helper to frappe.model.document.
+        from frappe.model.document import _get_extended_class
     from hrms.payroll.doctype.salary_slip.salary_slip import SalarySlip
     from hrms.payroll.doctype.salary_structure_assignment.salary_structure_assignment import (
         SalaryStructureAssignment,
