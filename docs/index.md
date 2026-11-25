@@ -8,6 +8,8 @@ lang: en
 
 # Attendance Policy and Payroll Automation for Frappe HR: Late, Early Exit, Break and Overtime Rules
 
+![Banner](banner.svg)
+
 In many Bangladeshi companies, attendance rules such as late-arrival penalties, break limits and overtime blocks are applied by hand at payroll time. **Reckon HR Policy** by Reckon Technologies Ltd. turns those rules into configurable settings on Frappe HR v16, so the native Salary Slip carries the result with full evidence.
 
 ## Detailed features
